@@ -1,0 +1,10 @@
+[Unit]
+Description=Run TTS Agent evaluation every Sunday
+
+[Timer]
+OnCalendar=Sun *-*-* 04:20:00
+Persistent=true
+RandomizedDelaySec=600
+
+[Install]
+WantedBy=timers.target

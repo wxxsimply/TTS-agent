@@ -1,0 +1,12 @@
+# Cloud deployment with Caddy (HTTPS auto)
+
+:80 {
+    reverse_proxy /api/* backend:8000
+    reverse_proxy /* frontend:80
+}
+
+# For production with domain:
+# your-domain.com {
+#     reverse_proxy /api/* backend:8000
+#     reverse_proxy /* frontend:80
+# }

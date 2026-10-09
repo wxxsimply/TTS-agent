@@ -1,0 +1,67 @@
+users:
+  description: 跨境电商独立站客户表，记录注册渠道和地区
+  fields:
+    id: 客户唯一ID
+    email: 客户邮箱
+    name: 客户姓名
+    region: 所在地区（如 US, EU, SEA）
+    channel: 注册渠道（organic, facebook, google, tiktok）
+    registered_at: 注册时间
+
+products:
+  description: 商品SKU信息表
+  fields:
+    id: 商品ID
+    sku: 商品SKU编码
+    name: 商品名称
+    category: 商品品类（Electronics, Fashion, Home, Beauty）
+    price: 商品单价（USD）
+
+orders:
+  description: 订单主表，记录订单状态和总金额
+  fields:
+    id: 订单ID
+    user_id: 下单客户ID，关联 users.id
+    order_no: 订单编号
+    status: 订单状态（paid, shipped, delivered, refunded, cancelled）
+    total_amount: 订单总金额（USD）
+    created_at: 下单时间
+
+order_items:
+  description: 订单明细表，记录每个订单中的商品和数量
+  fields:
+    id: 明细ID
+    order_id: 订单ID，关联 orders.id
+    product_id: 商品ID，关联 products.id
+    quantity: 购买数量
+    unit_price: 成交单价
+
+ad_campaigns:
+  description: 广告投放活动表
+  fields:
+    id: 活动ID
+    name: 活动名称
+    platform: 投放平台（facebook, google, tiktok）
+    start_date: 活动开始日期
+    end_date: 活动结束日期
+
+ad_spend:
+  description: 广告每日花费和效果数据
+  fields:
+    id: 记录ID
+    campaign_id: 活动ID，关联 ad_campaigns.id
+    spend_date: 花费日期
+    amount: 当日广告花费（USD）
+    impressions: 展示次数
+    clicks: 点击次数
+
+traffic_sessions:
+  description: 网站流量会话表，记录访问来源和转化
+  fields:
+    id: 记录ID
+    session_id: 会话唯一标识
+    source: 流量来源（organic, facebook, google, tiktok, direct）
+    landing_page: 落地页URL
+    visited_at: 访问时间
+    converted: 是否转化（下单）
+    user_id: 关联客户ID（转化后）

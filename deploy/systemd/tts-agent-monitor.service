@@ -1,0 +1,11 @@
+[Unit]
+Description=TTS Agent service and queue monitor
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/tts-agent-monitor
+User=root
+Group=root
+

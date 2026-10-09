@@ -1,0 +1,81 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tts_agent}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tts_agent_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-tts_agent}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tts_agent}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-tts_agent}:${POSTGRES_PASSWORD:-tts_agent_secret}@postgres:5432/${POSTGRES_DB:-tts_agent}?sslmode=disable
+      DATABASE_READONLY_URL: postgres://agent_readonly:readonly_secret@postgres:5432/${POSTGRES_DB:-tts_agent}?sslmode=disable
+      REDIS_URL: redis://redis:6379/0
+      DOMAINS_PATH: /app/domains
+      PORT: "8000"
+      TZ: Asia/Shanghai
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["/app/worker"]
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-tts_agent}:${POSTGRES_PASSWORD:-tts_agent_secret}@postgres:5432/${POSTGRES_DB:-tts_agent}?sslmode=disable
+      DATABASE_READONLY_URL: postgres://agent_readonly:readonly_secret@postgres:5432/${POSTGRES_DB:-tts_agent}?sslmode=disable
+      REDIS_URL: redis://redis:6379/0
+      DOMAINS_PATH: /app/domains
+      TZ: Asia/Shanghai
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

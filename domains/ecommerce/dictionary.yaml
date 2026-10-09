@@ -1,0 +1,87 @@
+fields:
+  id: { label: 编号, format: integer }
+  email: { label: 客户邮箱, format: text, sensitive: true }
+  name: { label: 名称, format: text }
+  region: { label: 所在地区, format: text }
+  channel: { label: 注册渠道, format: text }
+  registered_at: { label: 注册时间, format: datetime }
+  sku: { label: 商品 SKU, format: text }
+  category: { label: 商品品类, format: text }
+  price: { label: 商品单价, format: currency, unit: 美元 }
+  user_id: { label: 客户编号, format: integer, sensitive: true }
+  order_no: { label: 订单编号, format: text }
+  status: { label: 订单状态, format: text }
+  total_amount: { label: 订单金额, format: currency, unit: 美元 }
+  created_at: { label: 下单时间, format: datetime }
+  order_id: { label: 订单编号, format: integer }
+  product_id: { label: 商品编号, format: integer }
+  quantity: { label: 购买数量, format: integer, unit: 件 }
+  unit_price: { label: 成交单价, format: currency, unit: 美元 }
+  platform: { label: 广告平台, format: text }
+  start_date: { label: 开始日期, format: date }
+  end_date: { label: 结束日期, format: date }
+  campaign_id: { label: 广告活动编号, format: integer }
+  spend_date: { label: 投放日期, format: date }
+  amount: { label: 广告花费, format: currency, unit: 美元 }
+  impressions: { label: 展示次数, format: integer, unit: 次 }
+  clicks: { label: 点击次数, format: integer, unit: 次 }
+  session_id: { label: 会话标识, format: text, sensitive: true }
+  source: { label: 流量来源, format: text }
+  landing_page: { label: 落地页, format: text }
+  visited_at: { label: 访问时间, format: datetime }
+  converted: { label: 是否转化, format: boolean }
+
+aliases:
+  order_date: { label: 日期, format: date }
+  day: { label: 日期, format: date }
+  month: { label: 月份, format: month }
+  customer_count: { label: 客户数, format: integer, unit: 人 }
+  user_count: { label: 客户数, format: integer, unit: 人 }
+  order_count: { label: 订单数, format: integer, unit: 单 }
+  total_orders: { label: 订单总数, format: integer, unit: 单 }
+  sales: { label: 销售额, format: currency, unit: 美元 }
+  total_sales: { label: 销售额, format: currency, unit: 美元 }
+  revenue: { label: 销售额, format: currency, unit: 美元 }
+  gmv: { label: 商品交易总额, format: currency, unit: 美元 }
+  avg_order_value: { label: 平均客单价, format: currency, unit: 美元 }
+  aov: { label: 平均客单价, format: currency, unit: 美元 }
+  repeat_rate: { label: 复购率, format: percent, unit: "%" }
+  repurchase_rate: { label: 复购率, format: percent, unit: "%" }
+  conversion_rate: { label: 转化率, format: percent, unit: "%" }
+  refund_rate: { label: 退款率, format: percent, unit: "%" }
+  roi: { label: 广告 ROI, format: decimal }
+  total_spend: { label: 广告花费, format: currency, unit: 美元 }
+  ad_spend: { label: 广告花费, format: currency, unit: 美元 }
+  sessions: { label: 访问量, format: integer, unit: 次 }
+  session_count: { label: 访问量, format: integer, unit: 次 }
+
+metrics:
+  sales:
+    label: 销售额
+    definition: 排除取消订单后，订单金额 total_amount 的合计
+    synonyms: [销售额, 成交额, 营收, revenue]
+    format: currency
+    unit: 美元
+  average_order_value:
+    label: 平均客单价
+    definition: 有效订单销售额除以有效订单数
+    synonyms: [客单价, 平均订单金额, AOV]
+    format: currency
+    unit: 美元
+  repeat_purchase_rate:
+    label: 复购率
+    definition: 统计期内下单两次及以上客户数除以下单客户总数
+    synonyms: [复购率, 重复购买率]
+    format: percent
+    unit: "%"
+  conversion_rate:
+    label: 转化率
+    definition: converted 为真的访问会话数除以访问会话总数
+    synonyms: [转化率, 下单转化率]
+    format: percent
+    unit: "%"
+  advertising_roi:
+    label: 广告 ROI
+    definition: 广告带来的销售额除以广告花费；当前数据没有订单与广告活动的直接归因关系时必须说明限制
+    synonyms: [广告ROI, 投产比, 广告回报率]
+    format: decimal

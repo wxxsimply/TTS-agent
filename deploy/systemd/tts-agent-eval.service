@@ -1,0 +1,11 @@
+[Unit]
+Description=TTS Agent weekly evaluation suite
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment=APP_DIR=/opt/tts-agent
+Environment=EVAL_LIMIT=50
+ExecStart=/usr/local/sbin/tts-agent-eval
+Nice=10

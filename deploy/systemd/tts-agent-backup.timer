@@ -1,0 +1,12 @@
+[Unit]
+Description=Run TTS Agent PostgreSQL backup every day
+
+[Timer]
+OnCalendar=*-*-* 03:15:00 Asia/Shanghai
+Persistent=true
+RandomizedDelaySec=300
+Unit=tts-agent-backup.service
+
+[Install]
+WantedBy=timers.target
+

@@ -1,0 +1,6 @@
+community_members:
+  description: 私域社群成员表（stub）
+  fields:
+    id: 成员ID
+    name: 成员名称
+    join_date: 加入日期
